@@ -28,15 +28,26 @@ test  = csv_data[~split]
 model = linear_model.LinearRegression()
 train_x = np.asanyarray(train[['ENGINESIZE','CYLINDERS','FUELCONSUMPTION_COMB']])
 # np.asanyarray() converts the data into a numpy array but preserves subclass or special structure for example it will keep a matrix 
-# a matrix where as np.asarray() will convert the data into a regular numpy array here we should use np.asarray() as the data is simple
+# a matrix where as np.asanyarray() will convert the data into a regular numpy array here we should use np.asanyarray() as the data is simple
 # and does not contain a special sub class
-train_y = np.asarray(train[['CO2EMISSIONS']])
+train_y = np.asanyarray(train[['CO2EMISSIONS']])
 model.fit(train_x,train_y)
 # fits data to the model and trains the model to learn from the provided data so it can make predictions on new and unseen data
 print("Coeffecients : ",model.coef_)
-modelpred = model.predict(test[['ENGINESIZE','CYLINDERS','FUELCONSUMPTION_COMB']])
+x_Test=np.asanyarray(test[['ENGINESIZE','CYLINDERS','FUELCONSUMPTION_COMB']])
+y_Test =np.asanyarray(test[['CO2EMISSIONS']])
+modelpred = model.predict(x_Test)
 # preding using test data 
-x_Test=np.asarray(test[['ENGINESIZE','CYLINDERS','FUELCONSUMPTION_COMB']])
-y_Test =np.asarray(test[['CO2EMISSIONS']])
 print("Mean squared eror = ",np.mean((modelpred-y_Test)**2))
 print("Variance score %.2f " % model.score(x_Test,y_Test))
+#2nd Model
+model2 = linear_model.LinearRegression()
+model2_train_x = np.asanyarray(train[['ENGINESIZE','CYLINDERS','FUELCONSUMPTION_CITY','FUELCONSUMPTION_HWY']])
+model2_train_y = np.asanyarray(train[['CO2EMISSIONS']])
+model2.fit(model2_train_x,model2_train_y)
+print("Coefficients ",model2.coef_)
+model2_test_x= np.asanyarray(test[['ENGINESIZE','CYLINDERS','FUELCONSUMPTION_CITY','FUELCONSUMPTION_HWY']])
+model2_test_y= np.asanyarray(test[['CO2EMISSIONS']])
+model2pred = model2.predict(model2_test_x)
+print("Mean Squared error : ", np.mean((model2pred-model2_test_y)**2))
+print("Variance Score : %.2f" % model2.score(model2_test_x,model2_test_y))
