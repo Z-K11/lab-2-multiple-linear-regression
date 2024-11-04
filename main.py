@@ -34,3 +34,9 @@ train_y = np.asarray(train[['CO2EMISSIONS']])
 model.fit(train_x,train_y)
 # fits data to the model and trains the model to learn from the provided data so it can make predictions on new and unseen data
 print("Coeffecients : ",model.coef_)
+modelpred = model.predict(test[['ENGINESIZE','CYLINDERS','FUELCONSUMPTION_COMB']])
+# preding using test data 
+x_Test=np.asarray(test[['ENGINESIZE','CYLINDERS','FUELCONSUMPTION_COMB']])
+y_Test =np.asarray(test[['CO2EMISSIONS']])
+print("Mean squared eror = ",np.mean((modelpred-y_Test)**2))
+print("Variance score %.2f " % model.score(x_Test,y_Test))
